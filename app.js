@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
 //app.listen(80);
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, err => {
     if (err) throw err;
     console.log("%c Server running", "color: green");
