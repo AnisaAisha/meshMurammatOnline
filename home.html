@@ -3,8 +3,10 @@
 
 <head>
     <title>Home Page</title>
-    <link rel="stylesheet" , type="text/css" , href="/stylesheets/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
     <style>
         /* The popup form - hidden by default */
         
@@ -20,11 +22,32 @@
 </head>
 
 <body onLoad="onLoad()">
-    <div id=topbar>
-        <div class="dropdown">
-            <button class="dropbtn">File</button>
-            <div class="dropdown-content">
-                <form id="file-upload" name=file-upload enctype="multipart/form-data" method="POST" action='/uploadfile' onsubmit="return Validate(this)">
+    <div class="container-fluid">
+        <div class="row g-0">
+            <div id=topbar class="col-md-12">
+                <div class="dropdown">
+                    <button class="dropbtn">File</button>
+                    <div class="dropdown-content">
+                        <div class="menu__item" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <span>Upload File</span>
+                        </div>
+                        <div class="menu__item">
+                            <span>Export As</span>
+                            <i class="bi bi-caret-right-fill"></i>
+                            <div class="dropdown-content dropdown-submenu">
+                                <div class="menu__item">
+                                    <span>.OBJ</span>
+                                </div>
+                                <div class="menu__item">
+                                    <span>.PLY</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu__item">
+                            <span>Download..</span>
+                            <!-- Download sample OBJ and PLY files -->
+                        </div>
+                        <!--<form id="file-upload" name=file-upload enctype="multipart/form-data" method="POST" action='/uploadfile' onsubmit="return Validate(this)">
                     <input id="file-input" type="file" name="mesh" onchange="this.form.submit();">
                 </form>
                 <a onclick="exportPLY(scene.children[2])">Export</a>
@@ -32,147 +55,325 @@
                 <form id="export" onsubmit="return closeExportForm()">
                     <button onclick="this.form.submit(); exportAs(scene.children[2], 'obj')">Export OBJ</button>
                     <button onclick="this.form.submit(); exportAs(scene.children[2], 'ply')">Export PLY</button>
-                </form>
-            </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">View</button>
-            <div class="dropdown-content">
-                <a href="#">Full Screen</a>
+                </form>-->
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn">View</button>
+                    <div class="dropdown-content">
+                        <div class="menu__item">
+                            <span>Full Screen</span>
+                        </div>
+                        <div class="menu__item" onclick="displayAxis()">
+                            <span>View axes</span>
+                        </div>
+                        <div class="menu__item" onclick="loadWireframe()">
+                            <span>Wireframe</span>
+                        </div>
+                        <div class="menu__item" onclick="loadSolid()">
+                            <span>Solid View</span>
+                        </div>
+                        <!--<a href="#">Full Screen</a>
                 <a onclick="displayAxis()">View axes/grid</a>
                 <a onclick="loadWireframe()">Wireframe</a>
-                <a onclick="loadSolid()">Solid View</a>
-                <!--<a href="#">Vertex Info</a>
+                <a onclick="loadSolid()">Solid View</a>-->
+                        <!--<a href="#">Vertex Info</a>
                 <a href="#">Face Info</a>-->
-            </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Edit</button>
-            <div class="dropdown-content">
-                <a href="#">Undo</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn">Edit</button>
+                    <div class="dropdown-content">
+                        <div class="menu__item">
+                            <span>Undo</span>
+                        </div>
+                        <div class="menu__item">
+                            <span>Redo</span>
+                        </div>
+                        <div class="menu__item">
+                            <span>Edit History</span>
+                        </div>
+                        <!--<a href="#">Undo</a>
                 <a href="#">Redo</a>
-                <a href="#">Edit History</a>
+                <a href="#">Edit History</a>-->
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div id="viewer">
-        <div id="container" style="height: 537px; width: 962px; position:absolute;
+
+            <!-- Upload File Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Upload File</h5>
+                            <!--<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                            </button>-->
+                        </div>
+                        <div class="modal-body">
+                            <form id="file-upload" name=file-upload enctype="multipart/form-data" method="POST" action='/uploadfile' onsubmit="return Validate(this)">
+                                <input id="file-input" type="file" name="mesh" onchange="this.form.submit();">
+                            </form>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button id="file-submit" type="button" class="btn btn-primary modalButton">Done</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="statsModal" tabindex="-1" role="dialog" aria-labelledby="statsModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="statsModalLabel">Statistics</h5>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/" method="GET">
+                                <label id="num-vertices"></label><br>
+                                <label>No. of edges: 104,288</label><br>
+                                <label id="num-faces"></label><br>
+                                <label>No. of holes: 5</label><br>
+                                <label>Water Tight: No</label><br>
+                                <!--<button type="button" onclick="closeStats()">OK</button>-->
+                            </form>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="viewer" class="col-md-9">
+                <div id="container" style="height: 537px; width: 962px; position:absolute;
         margin-left: 0px; border-radius: 3px; display: block; float:left;">
 
-            <div class="form-popup" name="statistics" id="statistics">
-                <form action="/" method="GET">
-                    <h1>Statistics</h1>
-                    <label id="num-vertices"></label><br>
-                    <label>No. of edges: 104,288</label><br>
-                    <label id="num-faces"></label><br>
-                    <label>No. of holes: 5</label><br>
-                    <label>Water Tight: No</label><br>
+                    <!--<div class="form-popup" name="statistics" id="statistics">
+                        <form action="/" method="GET">
+                            <h1>Statistics</h1>
+                            <label id="num-vertices"></label><br>
+                            <label>No. of edges: 104,288</label><br>
+                            <label id="num-faces"></label><br>
+                            <label>No. of holes: 5</label><br>
+                            <label>Water Tight: No</label><br>
 
-                    <button type="button" onclick="closeStats()">OK</button>
-                </form>
+                            <button type="button" onclick="closeStats()">OK</button>
+                        </form>
+                    </div>-->
+                </div>
+            </div>
+            <div id="sidebar" class="col-md-3">
+                <div id="stats">
+                    <button id="statsbutton" data-bs-toggle="modal" data-bs-target="#statsModal" onclick="openStats()">View Statistics</button>
+                    <!--</div>
+                    <div id="filloptions">-->
+                    <form id="holedetection-form" method="GET" action="/detectholes">
+                        <button class="fillbutton" id="detect" onclick=callHighlight()>Detect Holes</button>
+                        <input id="hole-input" type="text" name="mesh" value="" hidden>
+                    </form>
+
+                    <button id="displaymesh" hidden onclick="loadHoleHighlight()"></button>
+
+                    <form id="holefill-form" method="GET" action="/fillholes">
+                        <button class="fillbutton" id="fill" type="submit" onclick=callFilled()>Fill Holes</button>
+                        <input id="fill-input" hidden type="text" name="mesh" value="">
+                    </form>
+
+                    <button id="filledmesh" hidden onclick="loadFilledMesh()"></button>
+
+                </div>
+                <div id="viewoptions">
+                    <div id="adjustments">
+                        <i class="bi bi-tools"></i>
+                        <span>Adjustments</span>
+                    </div>
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    Lighting
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="adjustment-options">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="pointLightSwitch" checked>
+                                            <div data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                <label>Point Light</label>
+                                                <i class="bi bi-caret-down-fill"></i>
+                                            </div>
+                                            <div class="collapse suboptions" id="collapseExample">
+                                                <span>Intensity</span>
+                                                <!--<p id="demo"></p>--->
+                                                <input type="range" min="1" max="100" value="50" class="slider" id="myRange"><br>
+                                                <!--<p>X: <input type="number" id="x" name="x" min="1" max="100"><br> Y: <input type="number" id="y" name="y" min="1" max="100"><br> Z: <input type="number" id="z" name="z" min="1" max="100"><br>
+                                                    <button onclick="update_lightpos(slider.value, x.value, y.value, z.value)">Change</button>
+                                                </p>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="adjustment-options">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="ambientLightSwitch" checked>
+                                            <div data-bs-toggle="collapse" href="#ambientCollapse" role="button" aria-expanded="false" aria-controls="ambientCollapse">
+                                                <label>Ambient Light</label>
+                                                <i class="bi bi-caret-down-fill"></i>
+                                            </div>
+                                            <div class="collapse justify-content-center align-items-center suboptions" id="ambientCollapse">
+                                                <span>Color</span>
+                                                <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#563d7c" title="Choose your color">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Materials
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="adjustment-options">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="basicMaterialSwitch" checked>
+                                            <div data-bs-toggle="collapse" href="#basicCollapse" role="button" aria-expanded="false" aria-controls="basicCollapse">
+                                                <label>Basic</label>
+                                                <i class="bi bi-caret-down-fill"></i>
+                                            </div>
+                                            <div class="collapse suboptions" id="basicCollapse">
+                                                <label for="basiccolor">Color:</label>
+                                                <input type="color" id="basiccolor" name="favcolor" value="#ff0000" onchange="basicMaterial()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="adjustment-options">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="lambertMaterialSwitch" checked>
+                                            <div data-bs-toggle="collapse" href="#lambertCollapse" role="button" aria-expanded="false" aria-controls="lambertCollapse">
+                                                <label>Lambert</label>
+                                                <i class="bi bi-caret-down-fill"></i>
+                                            </div>
+                                            <div class="collapse suboptions" id="lambertCollapse">
+                                                <label for="lambertcolor">Color:</label>
+                                                <input type="color" id="lambertcolor" name="favcolor" value="#049ef4"><br>
+                                                <label for="lambertemissivecolor">Emissive:</label>
+                                                <input type="color" id="lambertemissivecolor" name="favcolor" value="#000000"><br>
+                                                <button onclick="lambertMaterial()">Change</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="adjustment-options">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="phongMaterialSwitch" checked>
+                                            <div data-bs-toggle="collapse" href="#phongCollapse" role="button" aria-expanded="false" aria-controls="phongCollapse">
+                                                <label>Phong</label>
+                                                <i class="bi bi-caret-down-fill"></i>
+                                            </div>
+                                            <div class="collapse suboptions" id="phongCollapse">
+                                                <label for="phongcolor">Color:</label>
+                                                <input type="color" id="phongcolor" name="favcolor" value="#049ef4"><br>
+                                                <label for="phongemissivecolor">Emissive:</label>
+                                                <input type="color" id="phongemissivecolor" name="favcolor" value="#000000"><br>
+                                                <label for="phongspecularcolor">Specular:</label>
+                                                <input type="color" id="phongspecularcolor" name="favcolor" value="#111111"><br>
+                                                <label for="phongshininess">Shininess: </label>
+                                                <p id="demo_shininess"></p>
+                                                <input type="range" min="0" max="100" value="30" class="slider" id="phongshininess"><br>
+                                                <label for="phongflatshading">Flat Shading</label>
+                                                <input type="checkbox" id="phongflatshading" checked="false"><br>
+                                                <button onclick="phongMaterial()">Change</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<button class="accordion view">Lighting</button>
+                    <div class="subpanel">
+                        <button class="accordion view">Point Light</button>
+                        <div class="innerpanel">
+                            <p>Intensity:</p>
+                            <p id="demo"></p>
+                            <input type="range" min="1" max="100" value="50" class="slider" id="myRange"><br>
+                            <p>X: <input type="number" id="x" name="x" min="1" max="100"><br> Y: <input type="number" id="y" name="y" min="1" max="100"><br> Z: <input type="number" id="z" name="z" min="1" max="100"><br>
+                                <button onclick="update_lightpos(slider.value, x.value, y.value, z.value)">Change</button>
+                            </p>
+                        </div>
+
+                        <button class="accordion view">AmbientLight</button>
+                        <div class="innerpanel">
+                            <label for="ambientcolor">Color:</label>
+                            <input type="color" id="ambientcolor" name="favcolor" value="#ff0000">
+                            <button onclick="update_ambient()">Change</button>
+                        </div>
+
+
+                    </div>
+
+                    <button class="accordion view">Material</button>
+                    <div class="subpanel">
+                        <button class="accordion view">Basic</button>
+                        <div class="innerpanel">
+                            <label for="basiccolor">Color:</label>
+                            <input type="color" id="basiccolor" name="favcolor" value="#ff0000">
+                            <button onclick="basicMaterial()">Change</button>
+                        </div>
+
+                        <button class="accordion view">Lambert</button>
+                        <div class="innerpanel">
+                            <label for="lambertcolor">Color:</label>
+                            <input type="color" id="lambertcolor" name="favcolor" value="#049ef4"><br>
+                            <label for="lambertemissivecolor">Emissive:</label>
+                            <input type="color" id="lambertemissivecolor" name="favcolor" value="#000000"><br>
+                            <button onclick="lambertMaterial()">Change</button>
+                        </div>
+
+                        <button class="accordion view">Phong</button>
+                        <div class="subpanel">
+                            <label for="phongcolor">Color:</label>
+                            <input type="color" id="phongcolor" name="favcolor" value="#049ef4"><br>
+                            <label for="phongemissivecolor">Emissive:</label>
+                            <input type="color" id="phongemissivecolor" name="favcolor" value="#000000"><br>
+                            <label for="phongspecularcolor">Specular:</label>
+                            <input type="color" id="phongspecularcolor" name="favcolor" value="#111111"><br>
+                            <label for="phongshininess">Shininess: </label>
+                            <p id="demo_shininess"></p>
+                            <input type="range" min="0" max="100" value="30" class="slider" id="phongshininess"><br>
+                            <label for="phongflatshading">Flat Shading</label>
+                            <input type="checkbox" id="phongflatshading" checked="false"><br>
+                            <button onclick="phongMaterial()">Change</button>
+                        </div>
+
+                    </div>-->
+                </div>
             </div>
         </div>
     </div>
-    <div id="sidebar">
-        <div id="stats">
-            <button id="statsbutton" onclick=openStats(); fun()>STATISTICS</button>
-        </div>
-        <div id="filloptions">
-            <form id="holedetection-form" method="GET" action="/detectholes">
-                <button class="fillbutton" id="detect" onclick=callHighlight()>DETECT HOLES</button>
-                <input id="hole-input" type="text" name="mesh" value="" hidden>
-            </form>
-
-            <button id="displaymesh" hidden onclick="loadHoleHighlight()"></button>
-
-            <form id="holefill-form" method="GET" action="/fillholes">
-                <button class="fillbutton" id="fill" type="submit" onclick=callFilled()>FILL HOLES</button>
-                <input id="fill-input" hidden type="text" name="mesh" value="">
-            </form>
-
-            <button id="filledmesh" hidden onclick="loadFilledMesh()"></button>
-
-        </div>
-        <div id="viewoptions">
-            <p id="adjustments">Adjustments</p>
-            <button class="accordion view">Lighting</button>
-            <div class="subpanel">
-                <button class="accordion view">Point Light</button>
-                <div class="innerpanel">
-                    <p>Intensity:</p>
-                    <p id="demo"></p>
-                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange"><br>
-                    <p>X: <input type="number" id="x" name="x" min="1" max="100"><br> Y: <input type="number" id="y" name="y" min="1" max="100"><br> Z: <input type="number" id="z" name="z" min="1" max="100"><br>
-                        <button onclick="update_lightpos(slider.value, x.value, y.value, z.value)">Change</button>
-                    </p>
-                </div>
-
-                <button class="accordion view">AmbientLight</button>
-                <div class="innerpanel">
-                    <label for="ambientcolor">Color:</label>
-                    <input type="color" id="ambientcolor" name="favcolor" value="#ff0000">
-                    <button onclick="update_ambient()">Change</button>
-                </div>
-
-
-            </div>
-
-            <button class="accordion view">Material</button>
-            <div class="subpanel">
-                <button class="accordion view">Basic</button>
-                <div class="innerpanel">
-                    <label for="basiccolor">Color:</label>
-                    <input type="color" id="basiccolor" name="favcolor" value="#ff0000">
-                    <button onclick="basicMaterial()">Change</button>
-                </div>
-
-                <button class="accordion view">Lambert</button>
-                <div class="innerpanel">
-                    <label for="lambertcolor">Color:</label>
-                    <input type="color" id="lambertcolor" name="favcolor" value="#049ef4"><br>
-                    <label for="lambertemissivecolor">Emissive:</label>
-                    <input type="color" id="lambertemissivecolor" name="favcolor" value="#000000"><br>
-                    <button onclick="lambertMaterial()">Change</button>
-                </div>
-
-                <button class="accordion view">Phong</button>
-                <div class="subpanel">
-                    <label for="phongcolor">Color:</label>
-                    <input type="color" id="phongcolor" name="favcolor" value="#049ef4"><br>
-                    <label for="phongemissivecolor">Emissive:</label>
-                    <input type="color" id="phongemissivecolor" name="favcolor" value="#000000"><br>
-                    <label for="phongspecularcolor">Specular:</label>
-                    <input type="color" id="phongspecularcolor" name="favcolor" value="#111111"><br>
-                    <label for="phongshininess">Shininess: </label>
-                    <p id="demo_shininess"></p>
-                    <input type="range" min="0" max="100" value="30" class="slider" id="phongshininess"><br>
-                    <label for="phongflatshading">Flat Shading</label>
-                    <input type="checkbox" id="phongflatshading" checked="false"><br>
-                    <button onclick="phongMaterial()">Change</button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <div id="foot"></div>
+    <!--<div id="foot"></div>-->
 
     <script>
-        var acc = document.getElementsByClassName("accordion");
-        var i;
+        /*var acc = document.getElementsByClassName("accordion");
+                                                                                                                                var i;
 
-        for (i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function() {
-                this.classList.toggle("active");
+                                                                                                                                for (i = 0; i < acc.length; i++) {
+                                                                                                                                    acc[i].addEventListener("click", function() {
+                                                                                                                                        this.classList.toggle("active");*/
 
-                /* Toggle between hiding and showing the active panel */
-                var panel = this.nextElementSibling;
+        /* Toggle between hiding and showing the active panel */
+        /*var panel = this.nextElementSibling;
                 if (panel.style.display === "block") {
                     panel.style.display = "none";
                 } else {
                     panel.style.display = "block";
                 }
             });
-        }
+        }*/
 
         /*function openStats() {
             document.getElementById("statistics").style.display = "block";
@@ -182,7 +383,7 @@
             document.getElementById("statistics").style.display = "none";
         }
 
-        var coll = document.getElementsByClassName("collapsible");
+        /*var coll = document.getElementsByClassName("collapsible");
         var i;
 
         for (i = 0; i < coll.length; i++) {
@@ -195,8 +396,9 @@
                     content.style.display = "block";
                 }
             });
-        }
+        }*/
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.min.js"></script>
     <script type="module">
@@ -243,6 +445,7 @@
             scene = null,
             camera = null;
         var input = document.getElementById('file-input');
+        var inputSubmit = document.getElementById('file-submit');
         var currentfilename = ""
         var valids = [".ply", '.obj']
         var patterns = /\.[0-9a-z]+$/i;
@@ -250,6 +453,8 @@
 
         /*Get file input from HTML file upload button*/
         input.addEventListener('change', function(event) {
+            console.log('submit clicked')
+            console.log(this.files)
             clock.start();
             var file = this.files[0]; //Get the input file
             var reader = new FileReader(); //Asynchronously read file content	
@@ -342,7 +547,15 @@
                 }
 
                 clearScene();
-                scene.add(display_mesh);
+
+                inputSubmit.addEventListener('click', function(event) {
+                    if (display_mesh) {
+                        scene.add(display_mesh);
+                        $('#exampleModal').modal('hide');
+                    } else {
+                        console.log("An error occured!")
+                    }
+                })
 
                 render_time = clock.getDelta();
                 clock.stop();
@@ -630,7 +843,7 @@
         }
 
 
-        var slider = document.getElementById("myRange");
+        /*var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
         output.innerHTML = slider.value; // Display the default slider value
 
@@ -645,7 +858,7 @@
 
         slider2.oninput = function() {
             shininess_output.innerHTML = this.value;
-        }
+        }*/
 
         function update_lightpos(val, x, y, z) {
             //console.log(x, y, z)
@@ -666,7 +879,7 @@
         }
 
         function openStats() {
-            document.getElementById("statistics").style.display = "block";
+            //document.getElementById("statistics").style.display = "block";
             document.getElementById("num-faces").innerHTML = "No. of faces: " + renderer.info.render.faces;
             document.getElementById("num-vertices").innerHTML = "No. of vertices: " + vertex_count;
             console.log(renderer.info);
