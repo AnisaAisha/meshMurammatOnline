@@ -1,0 +1,8 @@
+libcgal-dev
+libboost-dev
+libboost-program-options-dev
+libboost-system-dev
+libboost-thread-dev
+libgmp-dev
+libmpfr-dev
+zlib1g-dev

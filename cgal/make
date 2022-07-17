@@ -1,0 +1,20 @@
+ifndef CGAL_MAKEFILE
+CGAL_MAKEFILE = /usr/local/cgal/share/cgal/cgal.mk
+endif
+include $(CGAL_MAKEFILE)
+
+LIBPATH = \
+          $(CGAL_LIBPATH)
+
+LDFLAGS = \
+          $(LONG_NAME_PROBLEM_LDFLAGS) \
+          $(CGAL_LDFLAGS)
+
+COMP=-frounding-math -fopenmp -lgmp -std=c++0x -l json -L$(LIBPATH) $(LDFLAGS)
+EXEC=../crender
+
+all: main.o
+    g++ -fPIC main.o $(EXEC) $(COMP)
+
+main.o: main.cpp ../common/common.hpp
+    g++ -c main.cpp $(COMP) -o main.o
