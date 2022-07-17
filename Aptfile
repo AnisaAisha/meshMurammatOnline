@@ -26,4 +26,5 @@ gcc
 libc6-dev
 cpp
 g++-11
+g++-multilib
 make
