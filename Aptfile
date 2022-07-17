@@ -19,5 +19,9 @@ libstdc++6
 libuv1
 procps
 zlib1g
+g++
 gcc
+cpp
+g++-11
+gcc-11
 make
