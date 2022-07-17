@@ -12,6 +12,7 @@ libc6
 libcurl4
 libexpat1
 libgcc-s1
+libjsoncpp1
 librhash0
 libstdc++6
 libuv1
