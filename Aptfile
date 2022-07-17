@@ -19,8 +19,11 @@ libstdc++6
 libuv1
 procps
 zlib1g
+build-essential
+dpkg-dev
 g++
 gcc
+libc6-dev
 cpp
 g++-11
 make
