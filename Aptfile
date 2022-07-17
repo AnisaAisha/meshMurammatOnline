@@ -6,3 +6,17 @@ libboost-thread-dev
 libgmp-dev
 libmpfr-dev
 zlib1g-dev
+cmake-data
+libarchive13
+libc6
+libcurl4
+libexpat1
+libgcc-s1
+libjsoncpp25
+librhash0
+libstdc++6 
+libuv1 
+procps
+zlib1g
+gcc
+make
