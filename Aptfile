@@ -7,6 +7,7 @@ libgmp-dev
 libmpfr-dev
 zlib1g-dev
 cmake
+cmake-data
 libarchive13
 libc6
 libcurl4
