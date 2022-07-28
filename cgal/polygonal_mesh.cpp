@@ -10,7 +10,7 @@ PolygonMesh::PolygonMesh(Surface_mesh m) {
 
 
 void PolygonMesh::read_input(const char* filename){
-    if(!PMP::read_polygon_mesh(filename, mesh))
+    if(!CGAL::IO::read_polygon_mesh(filename, mesh))
     {
         std::cerr << "Invalid input." << std::endl;
     }
@@ -54,14 +54,14 @@ void PolygonMesh::write_output_poly(){
     //    copiedMesh.add_vertex(*i);
     //
     std::ofstream output("polygonOutputClass.ply");
-    CGAL::write_PLY(output, copiedMesh);
+    CGAL::IO::write_PLY(output, copiedMesh);
 
 }
 
 
 void PolygonMesh::write_output_triangle(){
     std::ofstream output("triangularOutput.ply");
-    CGAL::write_PLY(output, mesh);
+    CGAL::IO::write_PLY(output, mesh);
     output.close();
 }
 

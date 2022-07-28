@@ -39,7 +39,7 @@ void PointCloud::convertToSoup() {
 
 void PointCloud::write_output(){
     std::ofstream output("pointcloudClassOutput.ply");
-    CGAL::write_PLY(output, mesh);
+    CGAL::IO::write_PLY(output, mesh);
 }
 
 Surface_mesh PointCloud::getMesh() {

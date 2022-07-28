@@ -50,13 +50,13 @@ int main(int argc, char* argv[])
 	}
 	//definitely not a point cloud, can be of any one of the three types
 	if (!is_pointcloud && filetype == "ply") {
-		read_PLY(mesh_input, points, polygons);
+		CGAL::IO::read_PLY(mesh_input, points, polygons);
 	}
 	else if (filetype == "obj") {
-		read_OBJ(mesh_input, points, polygons);
+		CGAL::IO::read_OBJ(mesh_input, points, polygons);
 	}
 	else if (filetype == "off") {
-		read_OFF(mesh_input, points, polygons);
+		CGAL::IO::read_OFF(mesh_input, points, polygons);
 	}
 	else if (!is_pointcloud){
 		std::cout << "Provided file format is not supported by this application" << std::endl;
@@ -108,10 +108,10 @@ int main(int argc, char* argv[])
 	std::ostream os(&fb);
 	if (is_manifold && !is_pointcloud) {
 		std::cout << "write triangular mesh" << std::endl;
-		write_PLY(os, points, polygons);
+		CGAL::IO::write_PLY(os, points, polygons);
 	}
 	else {
-		write_PLY(os, mesh);
+		CGAL::IO::write_PLY(os, mesh);
 	}
 	fb.close();
 

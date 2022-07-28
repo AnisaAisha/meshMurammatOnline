@@ -80,7 +80,7 @@ router.post('/uploadfile', upload.single('mesh'), (req, res, next) => {
     var fun = function() {
         console.log("fun() start");
         console.log(file.originalname)
-        exec(path.join(__dirname, '/meshtype_exe.exe'), [file.originalname, 'ply'], { cwd: __dirname }).toString()
+        exec(path.join(__dirname, '/meshtype.exe'), [file.originalname, 'ply'], { cwd: __dirname }).toString()
     };
 
     fun();

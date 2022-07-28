@@ -23,7 +23,7 @@ void Nonmanifold_Mesh::read_input(const char* filename){
 		std::cerr << "Cannot open file " << std::endl;
 		//return false;
 	}
-	read_PLY(ply_input, points, polygons);
+	CGAL::IO::read_PLY(ply_input, points, polygons);
 	ply_input.close();
 	//CGAL::Polygon_mesh_processing::polygon_soup_to_polygon_mesh(points, polygons, mesh);
 	//return true;
