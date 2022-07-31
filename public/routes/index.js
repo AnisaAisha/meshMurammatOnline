@@ -75,12 +75,12 @@ router.post('/uploadfile', upload.single('mesh'), (req, res, next) => {
         return next(error)
     }
 
-    var exec = require('child_process').execFileSync;
+    var exec = require('child_process').execFile;
 
     var fun = function() {
         console.log("fun() start");
         console.log(file.originalname)
-        exec(path.join(__dirname, '/meshtype.exe'), [file.originalname, 'ply'], { cwd: __dirname }).toString()
+        exec(path.join(__dirname, '/meshtype'), [file.originalname, 'ply'], { cwd: __dirname }).toString()
     };
 
     fun();
@@ -94,12 +94,12 @@ router.get('/detectholes', (req, res, next) => {
 
     const filename = req.query["mesh"];
 
-    var exec = require('child_process').execFileSync;
+    var exec = require('child_process').execFile;
 
     var fun = function() {
         console.log("fun() start")
         console.log(filename);
-        exec(path.join(__dirname, '/hole_detection_executable.exe'), [filename], { cwd: __dirname }).toString()
+        exec(path.join(__dirname, '/hole_detection_executable'), [filename], { cwd: __dirname }).toString()
     };
 
     fun();
@@ -113,12 +113,12 @@ router.get('/fillholes', (req, res, next) => {
     console.log(req.query["mesh"])
     const filename = req.query["mesh"];
 
-    var exec = require('child_process').execFileSync;
+    var exec = require('child_process').execFile;
 
     var fun = function() {
         console.log("fun() start")
         console.log(filename);
-        exec(path.join(__dirname, '/my_executable.exe'), [filename], { cwd: __dirname }).toString()
+        exec(path.join(__dirname, '/hole_filling'), [filename], { cwd: __dirname }).toString()
     };
 
     fun();
