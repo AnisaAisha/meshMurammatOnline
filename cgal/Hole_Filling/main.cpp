@@ -26,11 +26,11 @@ int main(int argc, char* argv[])
 	Mesh_holes a;
 	a.set_mesh(mesh);
 
-	//a.holefill_benchmark();
-	Mesh output_mesh = a.generate_hole_highlight();
-	std::vector<Hole> hole_list = a.get_hole_list();
-	a.hole_fill(hole_list[1]);
-	output_mesh = a.get_mesh();
+	a.holefill_benchmark();
+	//Mesh output_mesh = a.generate_hole_highlight();
+	//std::vector<Hole> hole_list = a.get_hole_list();
+	//a.hole_fill(hole_list[1]);
+	Mesh output_mesh = a.get_mesh();
 	//faces not getting merged with mesh...
 	//std::cout << output_mesh.number_of_faces() << std::endl;
 	//std::cout << output_mesh.number_of_vertices() << std::endl;

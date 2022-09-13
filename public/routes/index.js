@@ -99,7 +99,14 @@ router.get('/detectholes', (req, res, next) => {
     var fun = function() {
         console.log("fun() start")
         console.log(filename);
-        exec(path.join(__dirname, '/hole_detection_executable'), [filename], { cwd: __dirname }).toString()
+        console.log(__dirname)
+        console.log(fs.existsSync('/webapp/public/routes/hole_detection_executable'));
+        //exec(path.join('.', __dirname, '/hole_detection_executable'), [filename], { cwd: __dirname }).toString();
+        exec(path.join(__dirname, '/hole_detection_executable'), [filename], { cwd: __dirname }, function(err, stdout, stderr) {
+            console.log(err)
+            console.log(stdout)
+            console.log(stderr)
+        });
     };
 
     fun();
@@ -118,7 +125,12 @@ router.get('/fillholes', (req, res, next) => {
     var fun = function() {
         console.log("fun() start")
         console.log(filename);
-        exec(path.join(__dirname, '/hole_filling'), [filename], { cwd: __dirname }).toString()
+        //exec(path.join(__dirname, '/hole_filling'), [filename], { cwd: __dirname }).toString()
+        exec(path.join(__dirname, '/hole_filling'), [filename], { cwd: __dirname }, function(err, stdout, stderr) {
+            console.log(err)
+            console.log(stdout)
+            console.log(stderr)
+        });
     };
 
     fun();
