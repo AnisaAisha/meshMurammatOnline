@@ -32,38 +32,35 @@
                         <div class="menu__item" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             <span>Upload File</span>
                         </div>
-                        <div class="menu__item">
+                        <div class="dropdown menu__item">
                             <span>Export As</span>
                             <i class="bi bi-caret-right-fill"></i>
                             <div class="dropdown-content dropdown-submenu">
-                                <div class="menu__item">
+                                <div class="menu__item" onclick="exportAs('obj')">
                                     <span>.OBJ</span>
                                 </div>
-                                <div class="menu__item">
+                                <!-- REQUIRES FIXING OF VERSION ISSUES
+                                <div class="menu__item" onclick="exportAs(scene.children[2], 'ply')">
                                     <span>.PLY</span>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
-                        <div class="menu__item">
-                            <span>Download..</span>
-                            <!-- Download sample OBJ and PLY files -->
-                        </div>
                         <!--<form id="file-upload" name=file-upload enctype="multipart/form-data" method="POST" action='/uploadfile' onsubmit="return Validate(this)">
-                    <input id="file-input" type="file" name="mesh" onchange="this.form.submit();">
-                </form>
-                <a onclick="exportPLY(scene.children[2])">Export</a>
-                <a onclick="openExportForm()">Export As</a>
-                <form id="export" onsubmit="return closeExportForm()">
-                    <button onclick="this.form.submit(); exportAs(scene.children[2], 'obj')">Export OBJ</button>
-                    <button onclick="this.form.submit(); exportAs(scene.children[2], 'ply')">Export PLY</button>
-                </form>-->
+                                <input id="file-input" type="file" name="mesh" onchange="this.form.submit();">
+                            </form>
+                            <a onclick="exportPLY(scene.children[2])">Export</a>
+                            <a onclick="openExportForm()">Export As</a>
+                            <form id="export" onsubmit="return closeExportForm()">
+                                <button onclick="this.form.submit(); exportAs(scene.children[2], 'obj')">Export OBJ</button>
+                                <button onclick="this.form.submit(); exportAs(scene.children[2], 'ply')">Export PLY</button>
+                        </form>-->
                     </div>
                 </div>
                 <div class="dropdown">
                     <button class="dropbtn">View</button>
                     <div class="dropdown-content">
-                        <div class="menu__item">
-                            <span>Full Screen</span>
+                        <div class="menu__item" onclick="toggleFullScreen()">
+                            <span id="fullscreen">Open in Fullscreen</span>
                         </div>
                         <div class="menu__item" onclick="displayAxis()">
                             <span>View axes</span>
@@ -74,15 +71,9 @@
                         <div class="menu__item" onclick="loadSolid()">
                             <span>Solid View</span>
                         </div>
-                        <!--<a href="#">Full Screen</a>
-                <a onclick="displayAxis()">View axes/grid</a>
-                <a onclick="loadWireframe()">Wireframe</a>
-                <a onclick="loadSolid()">Solid View</a>-->
-                        <!--<a href="#">Vertex Info</a>
-                <a href="#">Face Info</a>-->
                     </div>
                 </div>
-                <div class="dropdown">
+                <!--<div class="dropdown">
                     <button class="dropbtn">Edit</button>
                     <div class="dropdown-content">
                         <div class="menu__item">
@@ -94,11 +85,8 @@
                         <div class="menu__item">
                             <span>Edit History</span>
                         </div>
-                        <!--<a href="#">Undo</a>
-                <a href="#">Redo</a>
-                <a href="#">Edit History</a>-->
                     </div>
-                </div>
+                </div>-->
             </div>
 
             <!-- Upload File Modal -->
@@ -130,13 +118,16 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="statsModalLabel">Statistics</h5>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body text-center">
                             <form action="/" method="GET">
-                                <label id="num-vertices"></label><br>
-                                <label>No. of edges: 104,288</label><br>
-                                <label id="num-faces"></label><br>
-                                <label>No. of holes: 5</label><br>
-                                <label>Water Tight: No</label><br>
+                                <label id="num-vertices"></label>
+                                <hr/>
+                                <label id="num-edges"></label>
+                                <hr/>
+                                <label id="num-faces"></label>
+                                <hr/>
+                                <!--<label>Holes:</label>-->
+                                <!--<label>Water Tight: No</label><br>-->
                                 <!--<button type="button" onclick="closeStats()">OK</button>-->
                             </form>
                         </div>
@@ -166,18 +157,18 @@
             </div>
             <div id="sidebar" class="col-md-3">
                 <div id="stats">
-                    <button id="statsbutton" data-bs-toggle="modal" data-bs-target="#statsModal" onclick="openStats()">View Statistics</button>
+                    <button id="statsbutton" data-bs-toggle="modal" data-bs-target="#statsModal" onclick="openStats()" disabled>View Statistics</button>
                     <!--</div>
                     <div id="filloptions">-->
                     <form id="holedetection-form" method="GET" action="/detectholes">
-                        <button class="fillbutton" id="detect" onclick=callHighlight()>Detect Holes</button>
+                        <button class="fillbutton" id="detect" onclick=callHighlight() disabled>Detect Holes</button>
                         <input id="hole-input" type="text" name="mesh" value="" hidden>
                     </form>
 
                     <button id="displaymesh" hidden onclick="loadHoleHighlight()"></button>
 
                     <form id="holefill-form" method="GET" action="/fillholes">
-                        <button class="fillbutton" id="fill" type="submit" onclick=callFilled()>Fill Holes</button>
+                        <button class="fillbutton" id="fill" type="submit" onclick=callFilled() disabled>Fill Holes</button>
                         <input id="fill-input" hidden type="text" name="mesh" value="">
                     </form>
 
@@ -192,7 +183,7 @@
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                <button class="accordion-button collapsed adjustment-panel" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                     Lighting
                                 </button>
                             </h2>
@@ -200,31 +191,33 @@
                                 <div class="accordion-body">
                                     <div class="adjustment-options">
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="pointLightSwitch" checked>
+                                            <input class="form-check-input" type="checkbox" id="pointLightSwitch" checked onchange="changePointLight()">
                                             <div data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                                                 <label>Point Light</label>
                                                 <i class="bi bi-caret-down-fill"></i>
                                             </div>
                                             <div class="collapse suboptions" id="collapseExample">
                                                 <span>Intensity</span>
-                                                <!--<p id="demo"></p>--->
-                                                <input type="range" min="1" max="100" value="50" class="slider" id="myRange"><br>
-                                                <!--<p>X: <input type="number" id="x" name="x" min="1" max="100"><br> Y: <input type="number" id="y" name="y" min="1" max="100"><br> Z: <input type="number" id="z" name="z" min="1" max="100"><br>
-                                                    <button onclick="update_lightpos(slider.value, x.value, y.value, z.value)">Change</button>
-                                                </p>-->
+                                                <input type="range" id="myRange" min="0" max="1" value="0.35" step="0.1">
+                                                <span id="rangeVal"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="adjustment-options">
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="ambientLightSwitch" checked>
+                                            <input class="form-check-input" type="checkbox" id="ambientLightSwitch" checked onchange="changeAmbient()">
                                             <div data-bs-toggle="collapse" href="#ambientCollapse" role="button" aria-expanded="false" aria-controls="ambientCollapse">
                                                 <label>Ambient Light</label>
                                                 <i class="bi bi-caret-down-fill"></i>
                                             </div>
-                                            <div class="collapse justify-content-center align-items-center suboptions" id="ambientCollapse">
-                                                <span>Color</span>
-                                                <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#563d7c" title="Choose your color">
+                                            <div class="collapse suboptions" id="ambientCollapse">
+                                                <!--<span>Color</span>
+                                                <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#563d7c" title="Choose your color">-->
+                                                <div class="d-flex flex-row justify-content-start">
+                                                    <label for="ambientcolor">Color</label>
+                                                    <input type="color" id="ambientColor" name="favcolor" value="#404040" onchange="setColorField('ambient')">
+                                                    <input type="text" id="ambientHex" class="color-text-field" value="#404040" onchange="setColorTextField('ambient')"></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -233,7 +226,7 @@
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <button class="accordion-button collapsed adjustment-panel" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                     Materials
                                 </button>
                             </h2>
@@ -241,34 +234,48 @@
                                 <div class="accordion-body">
                                     <div class="adjustment-options">
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="basicMaterialSwitch" checked>
+                                            <input class="form-check-input" type="checkbox" id="basicMaterialSwitch" unchecked onchange="basicMaterial()">
                                             <div data-bs-toggle="collapse" href="#basicCollapse" role="button" aria-expanded="false" aria-controls="basicCollapse">
                                                 <label>Basic</label>
                                                 <i class="bi bi-caret-down-fill"></i>
                                             </div>
                                             <div class="collapse suboptions" id="basicCollapse">
-                                                <label for="basiccolor">Color:</label>
-                                                <input type="color" id="basiccolor" name="favcolor" value="#ff0000" onchange="basicMaterial()">
+                                                <div class="d-flex flex-row justify-content-start">
+                                                    <label for="basiccolor">Color</label>
+                                                    <input type="color" id="basiccolor" name="favcolor" value="#ff0000" onchange="setColorField('basic')">
+                                                    <input type="text" id="basicHex" class="color-text-field" value="#ff0000" onchange="setColorTextField('basic')"></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="adjustment-options">
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="lambertMaterialSwitch" checked>
+                                            <input class="form-check-input" type="checkbox" id="lambertMaterialSwitch" unchecked onchange="lambertMaterial()">
                                             <div data-bs-toggle="collapse" href="#lambertCollapse" role="button" aria-expanded="false" aria-controls="lambertCollapse">
                                                 <label>Lambert</label>
                                                 <i class="bi bi-caret-down-fill"></i>
                                             </div>
                                             <div class="collapse suboptions" id="lambertCollapse">
-                                                <label for="lambertcolor">Color:</label>
+                                                <div class="d-flex flex-row justify-content-start">
+                                                    <label for="lambertcolor">Color</label>
+                                                    <input type="color" id="lambertcolor" name="favcolor" value="#049ef4" onchange="setColorField('lambertColor')">
+                                                    <input type="text" id="lambertHex" class="color-text-field" value="#049ef4" onchange="setColorTextField('lambertColor')"></span>
+                                                </div>
+                                                <div class="d-flex flex-row justify-content-start mt-2">
+                                                    <label for="lambertEmissiveColor">Emissive</label>
+                                                    <input type="color" id="lambertEmissiveColor" name="favcolor" value="#000000" onchange="setColorField('lambertEmissive')">
+                                                    <input type="text" id="emissiveHex" class="color-text-field" value="#000000" onchange="setColorField('lambertEmissive')"></span>
+                                                </div>
+                                                <!--<label for="lambertcolor">Color:</label>
                                                 <input type="color" id="lambertcolor" name="favcolor" value="#049ef4"><br>
                                                 <label for="lambertemissivecolor">Emissive:</label>
                                                 <input type="color" id="lambertemissivecolor" name="favcolor" value="#000000"><br>
-                                                <button onclick="lambertMaterial()">Change</button>
+                                                <button onclick="lambertMaterial()">Change</button>-->
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="adjustment-options">
+                                    <!-- PHONG MATERIAL TO BE ADDED LATER -->
+                                    <!--<div class="adjustment-options">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="phongMaterialSwitch" checked>
                                             <div data-bs-toggle="collapse" href="#phongCollapse" role="button" aria-expanded="false" aria-controls="phongCollapse">
@@ -276,7 +283,17 @@
                                                 <i class="bi bi-caret-down-fill"></i>
                                             </div>
                                             <div class="collapse suboptions" id="phongCollapse">
-                                                <label for="phongcolor">Color:</label>
+                                                <div class="d-flex flex-row justify-content-start">
+                                                    <label for="phongcolor">Color</label>
+                                                    <input type="color" id="phongcolor" name="favcolor" value="#049ef4" onchange="setColorField('phongColor')">
+                                                    <input type="text" id="phongHex" class="color-text-field" value="#049ef4" onchange="setColorTextField('phongColor')"></span>
+                                                </div>
+                                                <div class="d-flex flex-row justify-content-start">
+                                                    <label for="phongEmissiveColor">Emissive</label>
+                                                    <input type="color" id="phongEmissiveColor" name="favcolor" value="#000000" onchange="setColorField('phongEmissive')">
+                                                    <input type="text" id="phongEmissiveHex" class="color-text-field" value="#000000" onchange="setColorTextField('phongEmissive')"></span>
+                                                </div>-->
+                                    <!--<label for="phongcolor">Color:</label>
                                                 <input type="color" id="phongcolor" name="favcolor" value="#049ef4"><br>
                                                 <label for="phongemissivecolor">Emissive:</label>
                                                 <input type="color" id="phongemissivecolor" name="favcolor" value="#000000"><br>
@@ -287,133 +304,35 @@
                                                 <input type="range" min="0" max="100" value="30" class="slider" id="phongshininess"><br>
                                                 <label for="phongflatshading">Flat Shading</label>
                                                 <input type="checkbox" id="phongflatshading" checked="false"><br>
-                                                <button onclick="phongMaterial()">Change</button>
-                                            </div>
+                                                <button onclick="phongMaterial()">Change</button>-->
+                                    <!--</div>
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--<button class="accordion view">Lighting</button>
-                    <div class="subpanel">
-                        <button class="accordion view">Point Light</button>
-                        <div class="innerpanel">
-                            <p>Intensity:</p>
-                            <p id="demo"></p>
-                            <input type="range" min="1" max="100" value="50" class="slider" id="myRange"><br>
-                            <p>X: <input type="number" id="x" name="x" min="1" max="100"><br> Y: <input type="number" id="y" name="y" min="1" max="100"><br> Z: <input type="number" id="z" name="z" min="1" max="100"><br>
-                                <button onclick="update_lightpos(slider.value, x.value, y.value, z.value)">Change</button>
-                            </p>
-                        </div>
-
-                        <button class="accordion view">AmbientLight</button>
-                        <div class="innerpanel">
-                            <label for="ambientcolor">Color:</label>
-                            <input type="color" id="ambientcolor" name="favcolor" value="#ff0000">
-                            <button onclick="update_ambient()">Change</button>
-                        </div>
-
-
-                    </div>
-
-                    <button class="accordion view">Material</button>
-                    <div class="subpanel">
-                        <button class="accordion view">Basic</button>
-                        <div class="innerpanel">
-                            <label for="basiccolor">Color:</label>
-                            <input type="color" id="basiccolor" name="favcolor" value="#ff0000">
-                            <button onclick="basicMaterial()">Change</button>
-                        </div>
-
-                        <button class="accordion view">Lambert</button>
-                        <div class="innerpanel">
-                            <label for="lambertcolor">Color:</label>
-                            <input type="color" id="lambertcolor" name="favcolor" value="#049ef4"><br>
-                            <label for="lambertemissivecolor">Emissive:</label>
-                            <input type="color" id="lambertemissivecolor" name="favcolor" value="#000000"><br>
-                            <button onclick="lambertMaterial()">Change</button>
-                        </div>
-
-                        <button class="accordion view">Phong</button>
-                        <div class="subpanel">
-                            <label for="phongcolor">Color:</label>
-                            <input type="color" id="phongcolor" name="favcolor" value="#049ef4"><br>
-                            <label for="phongemissivecolor">Emissive:</label>
-                            <input type="color" id="phongemissivecolor" name="favcolor" value="#000000"><br>
-                            <label for="phongspecularcolor">Specular:</label>
-                            <input type="color" id="phongspecularcolor" name="favcolor" value="#111111"><br>
-                            <label for="phongshininess">Shininess: </label>
-                            <p id="demo_shininess"></p>
-                            <input type="range" min="0" max="100" value="30" class="slider" id="phongshininess"><br>
-                            <label for="phongflatshading">Flat Shading</label>
-                            <input type="checkbox" id="phongflatshading" checked="false"><br>
-                            <button onclick="phongMaterial()">Change</button>
-                        </div>
-
-                    </div>-->
                 </div>
             </div>
         </div>
     </div>
     <!--<div id="foot"></div>-->
 
-    <script>
-        /*var acc = document.getElementsByClassName("accordion");
-                                                                                                                                                                        var i;
-
-                                                                                                                                                                        for (i = 0; i < acc.length; i++) {
-                                                                                                                                                                            acc[i].addEventListener("click", function() {
-                                                                                                                                                                                this.classList.toggle("active");*/
-
-        /* Toggle between hiding and showing the active panel */
-        /*var panel = this.nextElementSibling;
-                if (panel.style.display === "block") {
-                    panel.style.display = "none";
-                } else {
-                    panel.style.display = "block";
-                }
-            });
-        }*/
-
-        /*function openStats() {
-            document.getElementById("statistics").style.display = "block";
-        }*/
-
-        function closeStats() {
-            document.getElementById("statistics").style.display = "none";
-        }
-
-        /*var coll = document.getElementsByClassName("collapsible");
-        var i;
-
-        for (i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var content = this.nextElementSibling;
-                if (content.style.display === "block") {
-                    content.style.display = "none";
-                } else {
-                    content.style.display = "block";
-                }
-            });
-        }*/
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.min.js"></script>
-    <script type="module">
+    <!--<script type="module">
         import * as THREE from './../../routes/three.module.js';
-    </script>
+    </script>-->
     <script src="//cdn.rawgit.com/mrdoob/three.js/r87/examples/js/controls/OrbitControls.js"></script>
     <script src="//cdn.rawgit.com/mrdoob/three.js/r87/examples/js/loaders/OBJLoader.js"></script>
     <script src="//cdn.rawgit.com/mrdoob/three.js/r87/examples/js/loaders/PLYLoader.js"></script>
     <script src="https://unpkg.com/three@0.126.1/examples/js/exporters/PLYExporter.js"></script>
     <script src="https://unpkg.com/three@0.126.1/examples/js/exporters/OBJExporter.js"></script>
-
-
-
     <script>
+        //TODO: make a separate file for all functions
+        // All HTML related funcs in one file, hole filling related in other etc
+
         $('#file-input').change(function() {
             $('#hole-input').val($(this).val().replace(/^.*\\/, "").replace("obj", "ply").replace("off", "ply"));
             $('#fill-input').val($(this).val().replace(/^.*\\/, "").replace("obj", "ply").replace("off", "ply"));
@@ -427,17 +346,28 @@
         var display_mesh;
         var point_light;
         var ambientLight;
-        var vertex_count;
+        var origMaterial;
+        var vertex_count = 0;
+        var pointLights = [];
+        var lightPositions = [
+            [0, 0, 25],
+            [0, 25, 0],
+            [25, 0, 0],
+            [0, -25, 0]
+        ]
 
         function clearScene() {
-            while (scene.children.length > 0) {
-                scene.remove(scene.children[0]);
-                console.log(scene.children.length);
+            if (scene) {
+                while (scene.children.length > 0) {
+                    scene.remove(scene.children[0]);
+                }
             }
             // Create a directional light to show off the object
-            point_light = new THREE.PointLight(0xffffff, 1, 0);
-            point_light.position.set(50, 50, 50);
-            scene.add(point_light);
+            for (let i = 0; i < 4; i++) {
+                pointLights.push(new THREE.PointLight(0xffffff, 0.35));
+                pointLights[i].position.set(lightPositions[i][0], lightPositions[i][1], lightPositions[i][2]);
+                scene.add(pointLights[i]);
+            }
             ambientLight = new THREE.AmbientLight(0x404040);
             scene.add(ambientLight);
         }
@@ -452,10 +382,22 @@
         var patterns = /\.[0-9a-z]+$/i;
         var extension = ""
 
+        var colorMap = {
+            ambientColor: document.getElementById("ambientColor"),
+            ambientHex: document.getElementById("ambientHex"),
+            basicColor: document.getElementById("basiccolor"),
+            basicHex: document.getElementById("basicHex"),
+            lambertColor: document.getElementById("lambertcolor"),
+            lambertHex: document.getElementById("lambertHex"),
+            phongColor: document.getElementById("phongcolor"),
+            phongHex: document.getElementById("phongHex"),
+            phongEmissive: document.getElementById("phongEmissiveColor"),
+            lambertEmissiveColor: document.getElementById("lambertEmissiveColor"),
+            lambertEmissiveHex: document.getElementById("emissiveHex")
+        }
+
         /*Get file input from HTML file upload button*/
         input.addEventListener('change', function(event) {
-            console.log('submit clicked')
-            console.log(this.files)
             clock.start();
             var file = this.files[0]; //Get the input file
             var reader = new FileReader(); //Asynchronously read file content	
@@ -467,15 +409,9 @@
                 extension = (currentfilename).match(patterns)[0] //extract extension
                     //PLY file loading
                 if (extension === valids[0]) {
-                    //console.log(extension)
-                    //console.log(valids[0])
-                    console.log('ply detected')
-
                     var loader = new THREE.PLYLoader();
                     var mesh = loader.parse(contents); //Parse the .ply file content to get mesh
                     mesh.computeVertexNormals();
-                    //console.log(mesh);
-                    console.log(mesh.attributes.position.count)
                     vertex_count = mesh.attributes.position.count;
 
                     if (mesh.index == null) {
@@ -502,16 +438,13 @@
 
                 //OBJ File loading
                 if (extension === valids[1]) {
-                    console.log('obj detected')
                     display_mesh = new THREE.OBJLoader().parse(contents); //Parse the .obj file content to get mesh
-                    console.log(display_mesh)
                 }
 
-                if (extension === ".off") {
+                /*if (extension === ".off") {
                     var loader = new THREE.PLYLoader();
                     var new_filename = currentfilename.slice(0, -3) + "ply";
-                    console.log(new_filename);
-                    /*setTimeout(function() {
+                    setTimeout(function() {
                         loader.load('./../routes/' + new_filename, function(geometry) {
                             console.log('./../routes/' + new_filename);
                             geometry.computeVertexNormals();
@@ -519,7 +452,7 @@
                                 vertexColors: THREE.FaceColors
                             });
                         });
-                    }, 60000);*/
+                    }, 60000);
 
                     loader.load('./../routes/' + new_filename, function(geometry) {
                         console.log('./../routes/' + new_filename);
@@ -528,31 +461,48 @@
                             vertexColors: THREE.FaceColors
                         });
                         display_mesh = new THREE.Mesh(geometry, material);
-                        console.log(display_mesh)
                         display_mesh.position.x = 0;
                         display_mesh.position.y = 0;
                         display_mesh.position.z = 0;
-                        console.log(display_mesh);
                     });
-                    //display_mesh = new THREE.Mesh(mesh, material);
-
-                    //console.log(display_mesh);
-                    /*var loader = new THREE.PLYLoader();
-                    var mesh = loader.parse(contents); //Parse the .ply file content to get mesh
-                    mesh.computeVertexNormals();
-                    
-                    console.log(mesh.attributes.position.count)*/
-                    //vertex_count = mesh.attributes.position.count;4
-
                     scene.add(display_mesh);
-                }
+                }*/
 
                 clearScene();
 
                 inputSubmit.addEventListener('click', function(event) {
                     if (display_mesh) {
+                        // scale and center mesh on screen
+                        var center = new THREE.Vector3();
+                        var size = new THREE.Vector3();
+                        var bbox = new THREE.Box3().setFromObject(display_mesh);
+                        bbox.getCenter(center);
+                        bbox.getSize(size);
+
+                        var maxAxis = Math.max(size.x, size.y, size.z);
+                        display_mesh.scale.multiplyScalar(5.0 / maxAxis);
+
+                        bbox.setFromObject(display_mesh);
+                        bbox.getCenter(center);
+                        bbox.getSize(size);
+
+                        display_mesh.position.x = 0;
+                        display_mesh.position.y = 0;
+                        display_mesh.position.z = 0;
+
                         scene.add(display_mesh);
+                        scene.traverse(function(child) {
+                            if (child.isMesh) {
+                                origMaterial = child.material;
+                            }
+                        });
                         $('#exampleModal').modal('hide');
+
+                        // Enable stats, hole detection and hole fill buttons
+                        document.getElementById("statsbutton").disabled = false;
+                        document.getElementById("detect").disabled = false;
+                        // TODO: Fill button should be enabled after hole detection
+                        document.getElementById("fill").disabled = false;
                     } else {
                         console.log("An error occured!")
                     }
@@ -561,13 +511,6 @@
                 render_time = clock.getDelta();
                 clock.stop();
                 console.log('render time: ', render_time);
-                //console.log(scene);
-                //console.log(display_mesh)
-                //camera.position.set(display_mesh.position.x, display_mesh.position.x, 100);
-                //camera.lookAt(display_mesh.position);
-
-                console.log("file loaded")
-                console.log(scene);
             }, false);
 
             /*Error check*/
@@ -580,21 +523,16 @@
 
         function callHighlight() {
             clock.start();
-            console.log(currentfilename)
-            console.log("callHighlight called")
             setTimeout(function() {
                 document.getElementById("displaymesh").click();
             }, 15000)
-            console.log("callHighlight ended")
         }
 
         function callFilled() {
             clock.start();
-            console.log("callFilled called")
             setTimeout(function() {
                 document.getElementById("filledmesh").click();
             }, 10000)
-            console.log("callFilled ended")
         }
 
         function loadHoleHighlight() {
@@ -602,7 +540,6 @@
             var loader = new THREE.PLYLoader();
 
             loader.load('./../routes/detected_hole.ply', function(geometry) {
-                console.log("ply loaded");
                 geometry.computeVertexNormals();
                 var material = new THREE.MeshStandardMaterial({
                     vertexColors: THREE.FaceColors
@@ -702,9 +639,13 @@
             // Create a directional light to show off the object
             point_light = new THREE.PointLight(0xffffff, 1, 0);
             ambientLight = new THREE.AmbientLight(0x404040);
-            point_light.position.set(50, 50, 100);
+            point_light.position.set(5, 0, 10);
             scene.add(point_light);
             scene.add(ambientLight);
+
+            const sphereSize = 1;
+            const pointLightHelper = new THREE.PointLightHelper(point_light, sphereSize);
+            scene.add(pointLightHelper);
 
             //Add controls to zoom in and out
             var controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -741,12 +682,12 @@
         function exportPLY(mesh) {
             // Instantiate an exporter
             var exporter = new THREE.PLYExporter();
-            console.log(mesh);
             // Parse the input and generate the ply output
             const data = exporter.parse(mesh);
+            //downloadFile(data);
             saveData(data, 'ply-output.ply')
             sendPLYFile(data)
-            return data;
+                //return data;
         }
 
         function sendPLYFile(filedata) {
@@ -769,10 +710,11 @@
             saveData(data, 'obj-output.obj')
         }
 
-        function exportAs(mesh, filetype) {
-            if (filetype = "obj") {
+        function exportAs(filetype) {
+            let mesh = scene.children.find(obj => obj.type === 'Mesh')
+            if (filetype === "obj") {
                 exportOBJ(mesh);
-            } else if (filetype = "ply") {
+            } else if (filetype === "ply") {
                 exportPLY(mesh);
             }
 
@@ -786,31 +728,119 @@
             document.getElementById("export").style.display = "none";
         }
 
+        //Reuse this for all color fields
+        function setColorTextField(type) {
+            if (type === 'ambient') {
+                let ambientColor = colorMap.ambientHex.value;
+                colorMap.ambientColor.value = ambientColor;
+                update_ambient(ambientColor);
+            } else if (type === 'basic') {
+                let basicColor = colorMap.basicHex.value;
+                colorMap.basicColor.value = basicColor;
+                basicMaterial(basicColor);
+            } else if (type === 'lambertColor') {
+                let lambertColor = colorMap.lambertHex.value;
+                colorMap.lambertColor.value = lambertColor;
+                lambertMaterial({
+                    color: lambertColor,
+                    type: 'color'
+                });
+            } else if (type === 'lambertEmissive') {
+                let emissiveColor = colorMap.lambertEmissiveHex.value;
+                colorMap.lambertEmissiveColor.value = emissiveColor;
+                lambertMaterial({
+                    color: emissiveColor,
+                    type: 'emissive'
+                });
+            }
+        }
 
-        function basicMaterial() {
-            basic_color = document.getElementById("basiccolor").value;
-            scene.traverse(function(child) {
-                if (child.isMesh) {
-                    child.material = new THREE.MeshBasicMaterial({
-                        color: basic_color
-                    });
-                }
-                display_mesh = child;
-            });
+        function setColorField(type) {
+            if (type === 'ambient') {
+                let ambientColor = colorMap.ambientColor.value;
+                colorMap.ambientHex.value = ambientColor;
+                update_ambient(ambientColor)
+            } else if (type === 'basic') {
+                let basicColor = colorMap.basicColor.value;
+                colorMap.basicHex.value = basicColor;
+                basicMaterial(basicColor)
+            } else if (type === 'lambertColor') {
+                let lambertColor = colorMap.lambertColor.value;
+                colorMap.lambertHex.value = lambertColor;
+                lambertMaterial({
+                    color: lambertColor,
+                    type: 'color'
+                });
+            } else if (type === 'lambertEmissive') {
+                let emissiveColor = colorMap.lambertEmissiveColor.value;
+                colorMap.lambertEmissiveHex.value = emissiveColor;
+                lambertMaterial({
+                    color: emissiveColor,
+                    type: 'emissive'
+                });
+            }
+        }
+
+        function basicMaterial(basic_color = '#ff0000') {
+            let isBasicEnabled = document.getElementById('basicMaterialSwitch').checked;
+            if (!isBasicEnabled) {
+                scene.traverse(function(child) {
+                    if (child.isMesh) {
+                        child.material = origMaterial;
+                    }
+                    display_mesh = child;
+                });
+            } else {
+                scene.traverse(function(child) {
+                    if (child.isMesh) {
+                        child.material = new THREE.MeshBasicMaterial({
+                            color: basic_color
+                        });
+                    }
+                    display_mesh = child;
+                });
+            }
             display_mesh.geometry.uvsNeedUpdate = true;
             display_mesh.needsUpdate = true;
         }
 
-        function lambertMaterial() {
+        function lambertMaterial(lambert_color = {
+            color: '#049ef4',
+            type: 'color'
+        }) {
+            let isLambertEnabled = document.getElementById('lambertMaterialSwitch').checked;
+            if (!isLambertEnabled) {
+                scene.traverse(function(child) {
+                    if (child.isMesh) {
+                        child.material = origMaterial;
+                    }
+                    display_mesh = child;
+                });
+            } else {
+                scene.traverse(function(child) {
+                    if (child.isMesh) {
+                        child.material = new THREE.MeshLambertMaterial({
+                            color: lambert_color.type === 'color' ? lambert_color.color : child.material.color,
+                            reflectivity: 10,
+                            refractionRatio: 0.98,
+                            emissive: lambert_color.type === 'emissive' ? lambert_color.color : child.material.emissive
+                        });
+                    }
+                    display_mesh = child;
+                });
+            }
+            display_mesh.geometry.uvsNeedUpdate = true;
+            display_mesh.needsUpdate = true;
+        }
+
+        /*function phongMaterial2(phong_color) {
             scene.traverse(function(child) {
-                var lambert_color = document.getElementById("lambertcolor").value;
-                var lambert_emissive = document.getElementById("lambertemissivecolor").value;
                 if (child.isMesh) {
-                    child.material = new THREE.MeshLambertMaterial({
-                        color: lambert_color,
-                        reflectivity: 10,
-                        refractionRatio: 0.98,
-                        emissive: lambert_emissive
+                    child.material = new THREE.MeshPhongMaterial({
+                        color: phong_color.type === 'color' ? phong_color.color : child.material.color,
+                        emissive: phong_color.type === 'emissive' ? phong_color.color : child.material.emissive,
+                        reflectivity: 1,
+                        refractionRatio: 0.98
                     });
                 }
                 display_mesh = child;
@@ -841,37 +871,62 @@
             });
             display_mesh.geometry.uvsNeedUpdate = true;
             display_mesh.needsUpdate = true;
-        }
-
-
-        /*var slider = document.getElementById("myRange");
-        var output = document.getElementById("demo");
-        output.innerHTML = slider.value; // Display the default slider value
-
-        var slider2 = document.getElementById("phongshininess");
-        var shininess_output = document.getElementById("demo_shininess");
-        shininess_output.innerHTML = slider2.value; // Display the default slider value
-
-        // Update the current slider value (each time you drag the slider handle)
-        slider.oninput = function() {
-            output.innerHTML = this.value;
-        }
-
-        slider2.oninput = function() {
-            shininess_output.innerHTML = this.value;
         }*/
 
-        function update_lightpos(val, x, y, z) {
-            //console.log(x, y, z)
-            //console.log(val)
-            point_light.position.set(x, y, z);
-            point_light.intensity = val;
+
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("rangeVal");
+        output.innerHTML = slider.value; // Display the default slider value
+        slider.oninput = function() {
+            output.innerHTML = this.value;
+            update_light(this.value);
         }
 
-        function update_ambient() {
-            //console.log(document.getElementById("ambientcolor").value)
-            //console.log(scene)
-            ambientLight.color = document.getElementById("ambientcolor").value;
+        function changeAmbient() {
+            let ambientSwitch = document.getElementById('ambientLightSwitch').checked;
+            if (!ambientSwitch) {
+                scene.children.forEach(child => {
+                    if (child.isAmbientLight) {
+                        scene.remove(child);
+                    }
+                })
+            } else {
+                scene.add(ambientLight);
+            }
+        }
+
+        function changePointLight() {
+            let lightSwitch = document.getElementById('pointLightSwitch').checked;
+            if (!lightSwitch) {
+                scene.children.forEach(child => {
+                    if (child.isPointLight) {
+                        scene.remove(child);
+                    }
+                })
+            } else {
+                for (let i = 0; i < 4; i++) {
+                    pointLights[i].position.set(lightPositions[i][0], lightPositions[i][1], lightPositions[i][2]);
+                    scene.add(pointLights[i]);
+                }
+            }
+        }
+
+        function update_light(val) {
+            let isPointEnabled = document.getElementById('pointLightSwitch').checked;
+            if (!isPointEnabled) {
+                return;
+            }
+            for (let i = 0; i < 4; i++) {
+                pointLights[i].intensity = val;
+            }
+        }
+
+        function update_ambient(color) {
+            let isAmbientEnabled = document.getElementById('ambientLightSwitch').checked;
+            if (!isAmbientEnabled) {
+                return;
+            }
+            ambientLight.color = new THREE.Color(color);
         }
 
         function displayAxis() {
@@ -879,14 +934,29 @@
             scene.add(axesHelper);
         }
 
+        function toggleFullScreen() {
+            let fullScreenText = document.getElementById('fullscreen');
+            let elem = document.body;
+            if (!document.fullscreenElement) {
+                fullScreenText.innerHTML = 'Exit Fullscreen'
+                elem.requestFullscreen().catch((err) => {
+                    console.log(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);
+                });
+            } else {
+                fullScreenText.innerHTML = 'Open in Fullscreen'
+                document.exitFullscreen();
+            }
+        }
+
         function openStats() {
             //document.getElementById("statistics").style.display = "block";
-            document.getElementById("num-faces").innerHTML = "No. of faces: " + renderer.info.render.faces;
-            document.getElementById("num-vertices").innerHTML = "No. of vertices: " + vertex_count;
-            console.log(renderer.info);
-
+            let face_count = renderer.info.render.faces;
+            document.getElementById("num-faces").innerHTML = "Face Count: " + face_count;
+            document.getElementById("num-vertices").innerHTML = "Vertex Count: " + vertex_count;
+            document.getElementById("num-edges").innerHTML = "Edges Count: " + (face_count * 3);
         }
-    </script>
 
+        //window.onLoad = onLoad()
+    </script>
 
 </body>
